@@ -1,0 +1,40 @@
+.appBox {
+	margin: 10vh auto;
+	border: 1px solid black;
+	width: 80vw;
+	background-color: ghostwhite;
+}
+
+.appRow {
+	padding-bottom: 4%;
+}
+
+.dates {
+	margin-top: 2%;
+}
+
+.game {
+	box-shadow: 0 1px 1px rgba(0,0,0,0.8);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 44%,rgba(0,0,0,0.05) 100%);
+	border-radius: 5px;
+	border-top: 1px solid lightgray;
+	display: inline-block;
+	margin: 4%
+}
+
+.game:hover {
+	/*font-size: 16px;*/
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 44%,rgba(100,150,255,.5) 100%);
+}
+
+.homeWin {
+	font-weight:bold;
+}
+
+.awayWin {
+	font-weight:bold;
+}
+
+input[name='date'] {
+	margin-bottom: 5px;
+}
