@@ -262,12 +262,18 @@
 						)
 					)
 				),
+				React.createElement('img', { src: this.state.gameDetail.game_media.media[0].thumbnail, className: 'img-responsive' }),
 				React.createElement(
 					'div',
 					{ className: 'row innBox text-center' },
 					React.createElement(
 						'div',
 						{ className: 'col-md-5' },
+						React.createElement(
+							'h2',
+							null,
+							this.state.gameDetail.home_team_city
+						),
 						React.createElement(
 							'h2',
 							null,
@@ -282,6 +288,11 @@
 					React.createElement(
 						'div',
 						{ className: 'col-md-5 col-md-offset-1 text-center' },
+						React.createElement(
+							'h2',
+							null,
+							this.state.gameDetail.away_team_city
+						),
 						React.createElement(
 							'h2',
 							null,

@@ -156,10 +156,12 @@ var Details = React.createClass({
 				</div>
 				<div className="row innBox text-center">
 					<div className="col-md-5">
+						<h2>{this.state.gameDetail.home_team_city}</h2>
 						<h2>{this.state.gameDetail.home_team_name}</h2>
 						<h3>{this.state.gameDetail.linescore.r.home}</h3>
 					</div>
 					<div className="col-md-5 col-md-offset-1 text-center">
+						<h2>{this.state.gameDetail.away_team_city}</h2>
 						<h2>{this.state.gameDetail.away_team_name}</h2>
 						<h3>{this.state.gameDetail.linescore.r.away}</h3>
 					</div>
