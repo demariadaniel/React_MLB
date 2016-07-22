@@ -3,10 +3,31 @@
 	border: 1px solid black;
 	width: 80vw;
 	background-color: ghostwhite;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .appRow {
 	padding-bottom: 4%;
+}
+
+.innBox	{
+	background-color: white;
+	padding: 10px;
+}
+
+.innBox h1 {
+	margin-top: 10px;
+}
+
+.row.innBox {
+	margin: 0px;
+}
+
+.btnBack {
+	float: right;
+	position: relative;
+	top: -60px;
 }
 
 .dates {

@@ -17,6 +17,16 @@ app.post('/api', function(req,res){
 	MLBurl = 'http://gd2.mlb.com/components/game/mlb/year_' + req.body.year + '/month_' + req.body.month + '/day_' + req.body.day + '/master_scoreboard.json'
 	console.log(MLBurl);
 	request.get(MLBurl, function(err, response){
+		if (err){
+			console.log("Error: " + err)
+			return
+		}
+		if (response.body == "GameDay - 404 Not Found"){
+			console.log(response.body)
+			games = ['No data available'];
+			res.send(games)
+			return
+		}
 		mlb = JSON.parse(response.body);
 		if (!mlb.data.games.game) {
 			games = ['No games scheduled'];

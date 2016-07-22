@@ -1,10 +1,23 @@
-// import { createStore } from 'redux'
+import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router'
+import { createStore } from 'redux'
 
-var App = React.createClass({
+var store = createStore(() => {});
+
+var reducer = function (state = {}, action) {
+    console.log('reducer_1 was called with state', state, 'and action', action)
+    return state;
+}
+
+store = createStore(reducer);
+
+console.log(store.getState());
+
+var Games = React.createClass({
 	getInitialState: function() {
 		return {
 			gamesInfo: [],
 			date: '2015-07-28',
+			gameDetail: {}
 			}
 		},
 	componentDidMount: function() {
@@ -39,9 +52,19 @@ var App = React.createClass({
 		console.log(event.target.value);
 		this.setState({date: event.target.value});
 	},
-	onClick: function(event){
+	handleGetGamesClick: function(event){
 		console.log(this.state.date);
 		this.loadDate();
+	},
+	getGameDetail: function(game){
+		console.log(game);
+		var reducer = function (state = {}, action) {
+    		console.log('reducer_1 was called with state', state, 'and action', action)
+    		return state;
+			}
+
+		store = createStore(reducer);
+		//this.loadDate();
 	},
 	render: function(){
 		return (
@@ -55,7 +78,7 @@ var App = React.createClass({
 									onChange={this.onChange}>
 							</input>
 							<button className="btn btn-default"
-									onClick={this.onClick}>Get Games
+									onClick={this.handleGetGamesClick}>Get Games
 							</button>
 						</div>
 					</div>
@@ -77,22 +100,105 @@ var App = React.createClass({
 										homeWin = "";
 										awayWin = "awayWin";
 									}
+									//use Redux to share state btwn {Games} and {Details}	 onClick={this.setState({gameDetail: game})}
+									//<Link to="/details">
 							return (
-									<div className="game col-md-3 text-center" key={i}>
-										<p className={homeWin}>Home Team: {game.home_team_name}</p>
-										<p>Score: {game.linescore.r.home}</p>
-										<p className={awayWin}>Away Team: {game.away_team_name}</p>
-										<p>Score: {game.linescore.r.away}</p>
+									<div className="game col-md-3 text-center" key={i} 
+										onClick={function(){
+													console.log(game);
+													var reducer = function (state = {}, action) {
+											    		action.item = game;
+												    	switch (action.type){
+												    		case'GAME_DETAIL':
+												    			return [
+												    				...state,
+												    				action.item
+												    			]
+												    		default:
+												    			return state;
+												    	}
+													}
+													store = createStore(reducer);
+													store.dispatch({type: 'GAME_DETAIL'})
+													console.log(store.getState());
+											}}>
+										<Link to="/details">
+											<p className={homeWin}>Home Team: {game.home_team_name}</p>
+											<p>Score: {game.linescore.r.home}</p>
+											<p className={awayWin}>Away Team: {game.away_team_name}</p>
+											<p>Score: {game.linescore.r.away}</p>
+										</Link>
 									</div>
 									)
-							}
-						)}
+								}
+							)}
 					</div>
 				</div>
 			)
 	}
 })
 
-ReactDOM.render(
-	<App />, document.getElementById('app')
+var Details = React.createClass({
+	getInitialState: function() {
+		return {
+			gameDetail: store.getState()[0]
+			}
+		},
+	render: function() {
+		console.log(this.state.gameDetail);
+		return(
+			<div className="appBox container">
+				<div className="innBox">
+					<h1>Details</h1>
+					<Link to="/">
+						<button className="btn btn-primary btnBack">Back</button>
+					</Link>
+				</div>
+				<div className="row innBox text-center">
+					<div className="col-md-5">
+						<h2>{this.state.gameDetail.home_team_name}</h2>
+						<h3>{this.state.gameDetail.linescore.r.home}</h3>
+					</div>
+					<div className="col-md-5 col-md-offset-1 text-center">
+						<h2>{this.state.gameDetail.away_team_name}</h2>
+						<h3>{this.state.gameDetail.linescore.r.away}</h3>
+					</div>
+				</div>
+				<div className="row innBox text-center">
+						<div className="col-md-4">
+							<h4>E</h4>
+							<p>Away: {this.state.gameDetail.linescore.e.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.e.home}</p>
+							<h4>H</h4>
+							<p>Away: {this.state.gameDetail.linescore.h.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.h.home}</p>
+						</div>
+						<div className="col-md-4">
+							<h4>HR</h4>
+							<p>Away: {this.state.gameDetail.linescore.hr.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.hr.home}</p>
+							<h4>R</h4>
+							<p>Away: {this.state.gameDetail.linescore.r.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.r.home}</p>
+						</div>
+						<div className="col-md-4">
+							<h4>SB</h4>
+							<p>Away: {this.state.gameDetail.linescore.sb.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.sb.home}</p>
+							<h4>SO</h4>
+							<p>Away: {this.state.gameDetail.linescore.so.away}</p>
+							<p>Home: {this.state.gameDetail.linescore.so.home}</p>
+						</div>
+				</div>
+			</div>
+			)
+	}
+})
+
+ReactDOM.render((
+	<Router history={browserHistory}>
+		<Route path='/' component={Games} />	
+			<Route path='/details' component={Details} />
+	</Router>), 
+	document.getElementById('app')
 	);
